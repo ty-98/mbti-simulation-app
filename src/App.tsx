@@ -16,6 +16,7 @@ function App() {
   const [chatHistory, setChatHistory] = useState<ChatMessage[]>([]);
   
   const [evaluationResult, setEvaluationResult] = useState<EvaluationResult | null>(null);
+  const [isEvaluating, setIsEvaluating] = useState(false);
 
   const handleStartSimulation = (data: SetupData) => {
     setSetupData(data);
@@ -23,23 +24,31 @@ function App() {
     setCurrentScreen('CHAT');
   };
 
-  const handleEndChat = () => {
-    // Generate mock evaluation based on chat history length and MBTI
-    const mockEval: EvaluationResult = {
-      score: Math.floor(Math.random() * 20) + 70, // Random 70-90
-      goodPoints: [
-        `${setupData.mbti}のタイプが好む、論理的で明確なコミュニケーションができていました。`,
-        "相手との関係性に適した、丁寧なトーンで話せていました。",
-        "相手の話をしっかりと聞き、誠実にレスポンスを返せていました。"
-      ],
-      improvements: [
-        `${setupData.mbti}のタイプに対して、感情的になりすぎないよう注意しましょう。`,
-        "次回はより具体的な例を挙げて説明できるようにしましょう。",
-        "相手が話しやすいよう、オープンエンドな質問を増やすとより良くなります。"
-      ]
-    };
-    setEvaluationResult(mockEval);
+  const handleEndChat = async () => {
     setCurrentScreen('EVALUATION');
+    setIsEvaluating(true);
+
+    try {
+      const response = await fetch('/api/evaluate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ setupData, chatHistory })
+      });
+
+      if (!response.ok) throw new Error('API failed');
+
+      const data = await response.json();
+      setEvaluationResult(data);
+    } catch (error) {
+      console.error(error);
+      setEvaluationResult({
+        score: 0,
+        goodPoints: ['エラーが発生しました'],
+        improvements: ['API設定（OPENAI_API_KEY）などを確認してください']
+      });
+    } finally {
+      setIsEvaluating(false);
+    }
   };
 
   const handleReturnHome = () => {
@@ -67,12 +76,19 @@ function App() {
             onEnd={handleEndChat} 
           />
         )}
-        {currentScreen === 'EVALUATION' && evaluationResult && (
-          <EvaluationDashboard 
-            result={evaluationResult} 
-            setupData={setupData} 
-            onReturnHome={handleReturnHome} 
-          />
+        {currentScreen === 'EVALUATION' && (
+          isEvaluating ? (
+            <div className="flex-col items-center justify-center p-8 text-center text-muted animate-fade-in" style={{ display: 'flex', gap: '16px', height: '60vh' }}>
+              <div style={{ fontSize: '1.5rem', fontWeight: 'bold' }}>評価を生成中...</div>
+              <div>AIがあなたのコミュニケーションを詳細に分析しています。数秒お待ちください。</div>
+            </div>
+          ) : evaluationResult && (
+            <EvaluationDashboard 
+              result={evaluationResult} 
+              setupData={setupData} 
+              onReturnHome={handleReturnHome} 
+            />
+          )
         )}
       </main>
     </>

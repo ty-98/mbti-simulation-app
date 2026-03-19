@@ -19,7 +19,7 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [chatHistory, isTyping]);
 
-  const handleSend = () => {
+  const handleSend = async () => {
     if (!inputText.trim()) return;
 
     const newUserMsg: ChatMessage = {
@@ -33,25 +33,41 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
     setInputText('');
     setIsTyping(true);
 
-    // Mock AI Reply logic
-    setTimeout(() => {
-      const mockReplies = [
-        `${setupData.mbti}として、その点をご指摘いただき感謝します。事実関係を確認しましょう。`,
-        `${setupData.relationship}という関係性を踏まえると、それは興味深い視点ですね。`,
-        `${setupData.situation}については、論理的なアプローチが必要だと考えています。`,
-        `おっしゃることは分かりますが、長期的な影響も考慮に入れる必要があります。`
-      ];
+    try {
+      const response = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          setupData,
+          chatHistory: [...chatHistory, newUserMsg],
+          inputText: inputText.trim()
+        })
+      });
+
+      if (!response.ok) throw new Error('APIエラーが発生しました');
+
+      const data = await response.json();
       
       const newAiMsg: ChatMessage = {
         id: (Date.now() + 1).toString(),
         sender: 'AI',
-        text: mockReplies[Math.floor(Math.random() * mockReplies.length)],
+        text: data.text || '申し訳ありません、応答に失敗しました。',
         timestamp: new Date()
       };
       
       setChatHistory(prev => [...prev, newAiMsg]);
+    } catch (error) {
+      console.error(error);
+      const errorMsg: ChatMessage = {
+        id: (Date.now() + 1).toString(),
+        sender: 'AI',
+        text: '通信エラーが発生しました。設定（APIキー等）を確認してください。',
+        timestamp: new Date()
+      };
+      setChatHistory(prev => [...prev, errorMsg]);
+    } finally {
       setIsTyping(false);
-    }, 1500);
+    }
   };
 
   const handleKeyPress = (e: React.KeyboardEvent) => {
