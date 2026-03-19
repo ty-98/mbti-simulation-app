@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import SituationSetting from './components/SituationSetting';
 import ChatSimulation from './components/ChatSimulation';
 import EvaluationDashboard from './components/EvaluationDashboard';
-import { Screen, SetupData, ChatMessage, EvaluationResult } from './types';
+import type { Screen, SetupData, ChatMessage, EvaluationResult } from './types';
 
 function App() {
   const [currentScreen, setCurrentScreen] = useState<Screen>('HOME');

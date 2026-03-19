@@ -1,5 +1,4 @@
-import React from 'react';
-import { EvaluationResult, SetupData } from '../types';
+import type { EvaluationResult, SetupData } from '../types';
 import { Home, CheckCircle2, AlertCircle, Award } from 'lucide-react';
 
 interface Props {

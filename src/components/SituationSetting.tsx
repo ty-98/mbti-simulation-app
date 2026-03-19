@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { SetupData, MBTIType, Relationship } from '../types';
+import { useState } from 'react';
+import type { FormEvent } from 'react';
+import type { SetupData, MBTIType, Relationship } from '../types';
 import { User, Users, MessageSquare, Play } from 'lucide-react';
 
 const mbtiTypes: MBTIType[] = [
@@ -24,7 +25,7 @@ export default function SituationSetting({ onStart }: Props) {
     situation: ''
   });
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = (e: FormEvent) => {
     e.preventDefault();
     if (data.mbti && data.relationship && data.situation) {
       onStart(data);

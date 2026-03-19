@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef } from 'react';
-import { SetupData, ChatMessage } from '../types';
+import { useState, useEffect, useRef } from 'react';
+import type { SetupData, ChatMessage } from '../types';
 import { Send, LogOut, Cpu, User as UserIcon } from 'lucide-react';
 
 interface Props {
