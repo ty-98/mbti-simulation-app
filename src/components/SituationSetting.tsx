@@ -11,7 +11,7 @@ const mbtiTypes: MBTIType[] = [
 ];
 
 const relationships: Relationship[] = [
-  'Boss', 'Subordinate', 'Colleague', 'Lover', 'Friend', 'First Meeting'
+  '上司', '部下', '同僚', '恋人', '友人', '初対面'
 ];
 
 interface Props {
@@ -37,15 +37,15 @@ export default function SituationSetting({ onStart }: Props) {
   return (
     <div className="glass-panel p-8 animate-fade-in" style={{ width: '100%', maxWidth: '600px', margin: '40px auto' }}>
       <div className="text-center mb-8">
-        <h1 className="text-3xl text-gradient mb-2">Simulation Setup</h1>
-        <p className="text-muted">Configure the parameters for your interpersonal practice.</p>
+        <h1 className="text-3xl text-gradient mb-2">シミュレーション設定</h1>
+        <p className="text-muted">対人練習のためのパラメータを設定してください。</p>
       </div>
 
       <form onSubmit={handleSubmit} className="flex-col gap-6" style={{ display: 'flex', flexDirection: 'column', gap: '24px' }}>
         <div>
           <label className="label flex-row items-center gap-2" style={{ display: 'flex' }}>
             <User size={18} />
-            Target MBTI Type
+            相手のMBTIタイプ
           </label>
           <select 
             className="input-base"
@@ -53,7 +53,7 @@ export default function SituationSetting({ onStart }: Props) {
             onChange={(e) => setData({ ...data, mbti: e.target.value as MBTIType })}
             required
           >
-            <option value="" disabled>Select MBTI Type</option>
+            <option value="" disabled>MBTIタイプを選択</option>
             {mbtiTypes.map(type => (
               <option key={type} value={type}>{type}</option>
             ))}
@@ -63,7 +63,7 @@ export default function SituationSetting({ onStart }: Props) {
         <div>
           <label className="label flex-row items-center gap-2" style={{ display: 'flex' }}>
             <Users size={18} />
-            Relationship
+            自分との関係
           </label>
           <select 
             className="input-base"
@@ -71,7 +71,7 @@ export default function SituationSetting({ onStart }: Props) {
             onChange={(e) => setData({ ...data, relationship: e.target.value as Relationship })}
             required
           >
-            <option value="" disabled>Select Relationship</option>
+            <option value="" disabled>関係を選択</option>
             {relationships.map(rel => (
               <option key={rel} value={rel}>{rel}</option>
             ))}
@@ -81,11 +81,11 @@ export default function SituationSetting({ onStart }: Props) {
         <div>
           <label className="label flex-row items-center gap-2" style={{ display: 'flex' }}>
             <MessageSquare size={18} />
-            Specific Situation
+            具体的なシチュエーション
           </label>
           <textarea 
             className="input-base"
-            placeholder="e.g. Asking for a raise, Breaking bad news, First date conversation..."
+            placeholder="例：昇進の交渉、悪いニュースを伝える、初デートの会話..."
             value={data.situation}
             onChange={(e) => setData({ ...data, situation: e.target.value })}
             required
@@ -99,7 +99,7 @@ export default function SituationSetting({ onStart }: Props) {
           disabled={!isFormValid}
         >
           <Play size={20} />
-          Start Simulation
+          シミュレーション開始
         </button>
       </form>
     </div>

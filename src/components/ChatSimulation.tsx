@@ -36,10 +36,10 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
     // Mock AI Reply logic
     setTimeout(() => {
       const mockReplies = [
-        `As an ${setupData.mbti}, I appreciate you bringing this up. Let's look at the facts.`,
-        `That's an interesting perspective given we are ${setupData.relationship}s.`,
-        `From my point of view, we need a logical approach to "${setupData.situation}".`,
-        `I hear what you're saying, but let's consider the long-term implications.`
+        `${setupData.mbti}として、その点をご指摘いただき感謝します。事実関係を確認しましょう。`,
+        `${setupData.relationship}という関係性を踏まえると、それは興味深い視点ですね。`,
+        `${setupData.situation}については、論理的なアプローチが必要だと考えています。`,
+        `おっしゃることは分かりますが、長期的な影響も考慮に入れる必要があります。`
       ];
       
       const newAiMsg: ChatMessage = {
@@ -70,11 +70,11 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
             <Cpu size={24} color="var(--accent-primary)" />
             {setupData.mbti} ({setupData.relationship})
           </h2>
-          <span className="text-sm text-muted">Simulation: {setupData.situation}</span>
+          <span className="text-sm text-muted">シミュレーション: {setupData.situation}</span>
         </div>
         <button className="btn btn-secondary" onClick={onEnd} style={{ padding: '8px 16px', fontSize: '0.9rem' }}>
           <LogOut size={16} />
-          End & Evaluate
+          終了して評価へ
         </button>
       </div>
 
@@ -82,7 +82,7 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
       <div style={{ flex: 1, overflowY: 'auto', padding: '24px', display: 'flex', flexDirection: 'column', gap: '16px' }}>
         {chatHistory.length === 0 && (
           <div className="text-center text-muted" style={{ margin: 'auto' }}>
-            <p>Start the conversation with your {setupData.mbti} {setupData.relationship}.</p>
+            <p>{setupData.mbti}の{setupData.relationship}との会話を始めてください。</p>
           </div>
         )}
         
@@ -139,7 +139,7 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
             value={inputText}
             onChange={(e) => setInputText(e.target.value)}
             onKeyDown={handleKeyPress}
-            placeholder={`Type your message to the ${setupData.mbti}...`}
+            placeholder={`${setupData.mbti}にメッセージを送信...`}
             style={{ minHeight: '50px', paddingRight: '60px', borderRadius: '24px' }}
             rows={1}
           />
@@ -152,7 +152,7 @@ export default function ChatSimulation({ setupData, chatHistory, setChatHistory,
             <Send size={18} color="white" />
           </button>
         </div>
-        <p className="text-muted text-center mt-2" style={{ fontSize: '0.75rem', marginBottom: 0 }}>Press Enter to send, Shift+Enter for new line</p>
+        <p className="text-muted text-center mt-2" style={{ fontSize: '0.75rem', marginBottom: 0 }}>Enterで送信、Shift+Enterで改行</p>
       </div>
     </div>
   );

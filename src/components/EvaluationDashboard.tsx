@@ -14,8 +14,8 @@ export default function EvaluationDashboard({ result, setupData, onReturnHome }:
   return (
     <div className="glass-panel p-8 animate-fade-in" style={{ width: '100%', maxWidth: '800px', margin: '40px auto' }}>
       <div className="text-center mb-8">
-        <h1 className="text-3xl text-gradient mb-2">Simulation Evaluation</h1>
-        <p className="text-muted">Analysis of your interaction with the {setupData.mbti} ({setupData.relationship}).</p>
+        <h1 className="text-3xl text-gradient mb-2">シミュレーション評価</h1>
+        <p className="text-muted">{setupData.mbti}（{setupData.relationship}）とのやり取りを分析しました。</p>
       </div>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'minmax(250px, 1fr) 2fr', gap: '32px' }}>
@@ -23,7 +23,7 @@ export default function EvaluationDashboard({ result, setupData, onReturnHome }:
         {/* Score Area */}
         <div className="card text-center" style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifySelf: 'center', width: '100%' }}>
           <Award size={48} color={scoreColor} style={{ marginBottom: '16px' }} />
-          <h2 className="text-xl mb-2 text-muted">Overall Score</h2>
+          <h2 className="text-xl mb-2 text-muted">総合スコア</h2>
           <div style={{ 
             fontSize: '4rem', fontWeight: 'bold', color: scoreColor,
             textShadow: `0 0 20px ${scoreColor}40`
@@ -38,7 +38,7 @@ export default function EvaluationDashboard({ result, setupData, onReturnHome }:
           <div className="card" style={{ borderLeft: '4px solid var(--success)' }}>
             <h3 className="text-lg font-bold mb-4 flex-row items-center gap-2" style={{ color: 'var(--success)', display: 'flex' }}>
               <CheckCircle2 size={20} />
-              What You Did Well
+              良かった点
             </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {result.goodPoints.map((point, idx) => (
@@ -53,7 +53,7 @@ export default function EvaluationDashboard({ result, setupData, onReturnHome }:
           <div className="card" style={{ borderLeft: '4px solid var(--danger)' }}>
             <h3 className="text-lg font-bold mb-4 flex-row items-center gap-2" style={{ color: 'var(--danger)', display: 'flex' }}>
               <AlertCircle size={20} />
-              Areas for Improvement
+              改善ポイント
             </h3>
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '12px' }}>
               {result.improvements.map((point, idx) => (
@@ -70,7 +70,7 @@ export default function EvaluationDashboard({ result, setupData, onReturnHome }:
       <div className="mt-8 text-center" style={{ borderTop: '1px solid var(--surface-border)', paddingTop: '24px', display: 'flex', justifyContent: 'center' }}>
         <button className="btn btn-secondary" onClick={onReturnHome} style={{ width: '100%', maxWidth: '300px' }}>
           <Home size={20} />
-          Return to Settings
+          設定に戻る
         </button>
       </div>
     </div>

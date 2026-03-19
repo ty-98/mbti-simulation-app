@@ -28,14 +28,14 @@ function App() {
     const mockEval: EvaluationResult = {
       score: Math.floor(Math.random() * 20) + 70, // Random 70-90
       goodPoints: [
-        `You respected the ${setupData.mbti}'s preference for clear communication.`,
-        "Your tone was appropriate for your relationship.",
-        "You actively listened and responded thoughtfully."
+        `${setupData.mbti}のタイプが好む、論理的で明確なコミュニケーションができていました。`,
+        "相手との関係性に適した、丁寧なトーンで話せていました。",
+        "相手の話をしっかりと聞き、誠実にレスポンスを返せていました。"
       ],
       improvements: [
-        `Be careful not to overwhelm the ${setupData.mbti} with too much emotion.`,
-        "Try to provide more concrete examples next time.",
-        "Ensure you ask more open-ended questions."
+        `${setupData.mbti}のタイプに対して、感情的になりすぎないよう注意しましょう。`,
+        "次回はより具体的な例を挙げて説明できるようにしましょう。",
+        "相手が話しやすいよう、オープンエンドな質問を増やすとより良くなります。"
       ]
     };
     setEvaluationResult(mockEval);
