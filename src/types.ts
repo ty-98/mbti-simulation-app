@@ -7,7 +7,7 @@ export type MBTIType =
   'ISTP' | 'ISFP' | 'ESTP' | 'ESFP';
 
 export type Relationship = 
-  'Boss' | 'Subordinate' | 'Colleague' | 'Lover' | 'Friend' | 'First Meeting';
+  '上司' | '部下' | '同僚' | '恋人' | '友人' | '初対面';
 
 export interface SetupData {
   mbti: MBTIType | '';
