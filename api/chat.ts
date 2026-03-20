@@ -1,9 +1,7 @@
 import type { VercelRequest, VercelResponse } from '@vercel/node';
-import OpenAI from 'openai';
+import { GoogleGenerativeAI } from '@google/generative-ai';
 
-const openai = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
-});
+const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY || '');
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (req.method !== 'POST') {
@@ -13,34 +11,30 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     const { setupData, chatHistory, inputText } = req.body;
 
-    const systemPrompt = `
-あなたは${setupData.mbti}の性格を持つ人間として振る舞うAIです。
+    const systemPrompt = `あなたは${setupData.mbti}の性格を持つ人間として振る舞うAIです。
 ユーザーからは「${setupData.relationship}」という関係性として接されます。
 現在のシチュエーションは「${setupData.situation}」です。
-
 MBTI（${setupData.mbti}）の特徴や行動パターン、口調を意識して返答してください。
 テキストチャットのような、自然で簡潔な長さの返答を心がけてください。
-AIやアシスタントとしてではなく、設定された人物として会話を続けてください。
-`;
+AIやアシスタントとしてではなく、設定された人物として会話を続けてください。`;
 
-    const messages = [
-      { role: 'system', content: systemPrompt },
-      ...chatHistory.map((msg: any) => ({
-        role: msg.sender === 'USER' ? 'user' : 'assistant',
-        content: msg.text
-      })),
-      { role: 'user', content: inputText }
-    ];
-
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      messages: messages as any,
+    const model = genAI.getGenerativeModel({ 
+      model: 'gemini-1.5-flash',
+      systemInstruction: systemPrompt 
     });
 
-    const reply = response.choices[0]?.message?.content || '申し訳ありません、エラーが発生しました。';
+    const history = chatHistory.map((msg: any) => ({
+      role: msg.sender === 'USER' ? 'user' : 'model',
+      parts: [{ text: msg.text }]
+    }));
+
+    const chat = model.startChat({ history });
+    const result = await chat.sendMessage(inputText);
+    const reply = result.response.text();
+
     res.status(200).json({ text: reply });
   } catch (error) {
-    console.error('OpenAI API Error:', error);
+    console.error('Gemini API Error:', error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 }
